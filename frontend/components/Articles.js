@@ -8,7 +8,6 @@ export default function Articles(props) {
   // ✨ where are my props? Destructure them here
 
   const token = localStorage.getItem('token')
-
   if (!token) {
     return <Navigate to="/" />;
   } 

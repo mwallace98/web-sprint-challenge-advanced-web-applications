@@ -6,6 +6,7 @@ import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
+import { axiosWithAuth } from '../axios'
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -44,7 +45,6 @@ export default function App() {
       setMessage(`Here are your articles, ${username}!`)
       navigate('/articles')
       console.log(res,'login')
-      getArticles()
     })
     .catch(err => {
       console.log(err)
@@ -61,7 +61,7 @@ export default function App() {
     setMessage('')
     setSpinnerOn(true)
     const token = localStorage.getItem('token')
-    axios.create({headers: {authorization:token}}).get('http://localhost:9000/api/articles')
+    axiosWithAuth().get('http://localhost:9000/api/articles')
   .then(res =>{
     setArticles(res.data.articles)
   })
