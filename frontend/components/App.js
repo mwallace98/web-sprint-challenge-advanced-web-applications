@@ -44,10 +44,12 @@ export default function App() {
       setSpinnerOn(false)
       setMessage(`Here are your articles, ${username}!`)
       navigate('/articles')
+      getArticles()
       console.log(res,'login')
     })
     .catch(err => {
       console.log(err)
+      setSpinnerOn(false)
     })
     // ✨ implement
     // We should flush the message state, turn on the spinner
@@ -59,14 +61,13 @@ export default function App() {
 
   const getArticles = () => {
     setMessage('')
-    setSpinnerOn(true)
-    const token = localStorage.getItem('token')
     axiosWithAuth().get('http://localhost:9000/api/articles')
   .then(res =>{
     setArticles(res.data.articles)
   })
   .catch(err => {
-    console.log(err)
+    console.log(err,'get articles error')
+    setSpinnerOn(false)
   })
     // ✨ implement
     // We should flush the message state, turn on the spinner
@@ -111,7 +112,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles articles={articles}/>
             </>
           } />
         </Routes>

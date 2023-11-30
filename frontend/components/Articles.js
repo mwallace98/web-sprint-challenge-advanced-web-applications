@@ -2,9 +2,12 @@ import React, { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import PT from 'prop-types'
 import axios from 'axios'
+import { axiosWithAuth } from '../axios'
 
 export default function Articles(props) {
-  
+  const {articles} = props
+
+  console.log(articles,'articles  ')
   // ✨ where are my props? Destructure them here
 
   const token = localStorage.getItem('token')
@@ -15,8 +18,7 @@ export default function Articles(props) {
   // we should render a Navigate to login screen (React Router v.6)
 
   useEffect(() => {
-    
-    axios.get('http://localhost:9000/api/articles')
+    axios.get('http://localhost:9000/api/articles',)
     .then(res => {
       console.log(res)
     })
@@ -32,9 +34,9 @@ export default function Articles(props) {
     <div className="articles">
       <h2>Articles</h2>
       {
-        ![].length
+        articles.length === 0
           ? 'No articles yet'
-          : [].map(art => {
+          : articles.map(art => {
             return (
               <div className="article" key={art.article_id}>
                 <div>
