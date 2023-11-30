@@ -23,7 +23,13 @@ export default function LoginForm(props) {
   const onSubmit = evt => {
     evt.preventDefault()
     login(values)
-    console.log(values)
+    axios.get('http://localhost:9000/api/articles')
+    .then(res => {
+      console.log(res)
+    })
+    .catch(res => {
+      console.log(res,'onsubmit')
+    })
     // ✨ implement
   }
 
