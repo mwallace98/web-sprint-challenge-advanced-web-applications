@@ -8,8 +8,9 @@ const initialFormValues = {
 }
 export default function LoginForm(props) {
   const [values, setValues] = useState(initialFormValues)
-
+  
   const {login} = props
+
   
 
   
@@ -20,11 +21,13 @@ export default function LoginForm(props) {
     setValues({ ...values, [id]: value })
   }
 
+
   const onSubmit = evt => {
     evt.preventDefault()
     login(values)
     axios.get('http://localhost:9000/api/articles')
     .then(res => {
+      
       console.log(res)
     })
     .catch(res => {

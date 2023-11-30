@@ -10,6 +10,7 @@ import axios from 'axios'
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
 
+
 export default function App() {
   // ✨ MVP can be achieved with these states
   const [message, setMessage] = useState('')
@@ -32,12 +33,18 @@ export default function App() {
 
   const login = ({ username, password }) => {
     setMessage('')
-    axios.post('http://localhost:3000/api/login',{
+    setSpinnerOn(true)
+    axios.post('http://localhost:9000/api/login',{
       username,
       password
     })
     .then(res => {
-      console.log(res.data)
+      localStorage.setItem('token', res.data.token)
+      setSpinnerOn(false)
+      setMessage(`Here are your articles, ${username}!`)
+      navigate('/articles')
+      console.log(res,'login')
+      getArticles()
     })
     .catch(err => {
       console.log(err)
@@ -51,6 +58,16 @@ export default function App() {
   }
 
   const getArticles = () => {
+    setMessage('')
+    setSpinnerOn(true)
+    const token = localStorage.getItem('token')
+    axios.create({headers: {authorization:token}}).get('http://localhost:9000/api/articles')
+  .then(res =>{
+    setArticles(res.data.articles)
+  })
+  .catch(err => {
+    console.log(err)
+  })
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -81,7 +98,7 @@ export default function App() {
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
       <Spinner />
-      <Message />
+      <Message message={message}/>
       <button id="logout" onClick={logout}>Logout from app</button>
       <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}> {/* <-- do not change this line */}
         <h1>Advanced Web Applications</h1>
@@ -90,7 +107,7 @@ export default function App() {
           <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm login={login}/>} />
+          <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
               <ArticleForm />
