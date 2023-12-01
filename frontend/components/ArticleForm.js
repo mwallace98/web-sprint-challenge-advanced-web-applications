@@ -17,6 +17,7 @@ export default function ArticleForm(props) {
   const onChange = evt => {
     const { id, value } = evt.target
     setValues({ ...values, [id]: value })
+    console.log(values,'values')
   }
 
   const onSubmit = evt => {
@@ -27,6 +28,7 @@ export default function ArticleForm(props) {
   }
 
   const isDisabled = () => {
+    return values.topic === '' || values.text === '' || values.title === ''
     // ✨ implement
     // Make sure the inputs have some values
   }
