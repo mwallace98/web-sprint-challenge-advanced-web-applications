@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import PT from 'prop-types'
 import axios from 'axios'
+import { axiosWithAuth } from '../axios'
 
 const initialFormValues = {
   username: '',
@@ -25,7 +26,7 @@ export default function LoginForm(props) {
   const onSubmit = evt => {
     evt.preventDefault()
     login(values)
-    axios.get('http://localhost:9000/api/articles')
+    axiosWithAuth().get('http://localhost:9000/api/articles')
     .then(res => {
       
       console.log(res)

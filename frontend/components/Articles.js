@@ -5,7 +5,8 @@ import axios from 'axios'
 import { axiosWithAuth } from '../axios'
 
 export default function Articles(props) {
-  const {articles} = props
+  const {articles ,setArticles, deleteArticle,currentArticleId} = props
+  
 
   // ✨ where are my props? Destructure them here
 
@@ -17,8 +18,9 @@ export default function Articles(props) {
   // we should render a Navigate to login screen (React Router v.6)
 
   useEffect(() => {
-    axios.get('http://localhost:9000/api/articles',)
+    axiosWithAuth().get('http://localhost:9000/api/articles',)
     .then(res => {
+      setArticles(res.data.articles)
       console.log(res)
     })
     .catch(err => {
@@ -45,7 +47,7 @@ export default function Articles(props) {
                 </div>
                 <div>
                   <button disabled={true} onClick={Function.prototype}>Edit</button>
-                  <button disabled={true} onClick={Function.prototype}>Delete</button>
+                  <button disabled={false} onClick={() => deleteArticle(art.article_id)}>Delete</button>
                 </div>
               </div>
             )

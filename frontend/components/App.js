@@ -18,6 +18,7 @@ export default function App() {
   const [articles, setArticles] = useState([])
   const [currentArticleId, setCurrentArticleId] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
+  
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
@@ -82,6 +83,16 @@ export default function App() {
   }
 
   const postArticle = article => {
+  
+    axiosWithAuth().post('http://localhost:9000/api/articles',article)
+    .then(res => {
+      setMessage (res.data.message)
+      setCurrentArticleId(res.data.article.article_id)
+    })
+    .catch(res => {
+      console.log(res)
+    })
+    
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
@@ -94,6 +105,15 @@ export default function App() {
   }
 
   const deleteArticle = article_id => {
+    axiosWithAuth().delete(`http://localhost:9000/api/articles/${article_id}`)
+    .then(res => {
+      setArticles(articles.filter(article => article.article_id !== article_id));
+      setMessage(res.data.message)
+      console.log(res)
+    })
+    .catch(res => {
+      console.log(res)
+    })
     // ✨ implement
   }
 
@@ -113,8 +133,8 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
-              <ArticleForm />
-              <Articles articles={articles}/>
+              <ArticleForm postArticle={postArticle}  updateArticle={updateArticle} currentArticleId={currentArticleId}  />
+              <Articles articles={articles} setArticles={setArticles} deleteArticle={deleteArticle} currentArticleId={currentArticleId}/>
             </>
           } />
         </Routes>
