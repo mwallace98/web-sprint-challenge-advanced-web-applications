@@ -7,7 +7,6 @@ import { axiosWithAuth } from '../axios'
 export default function Articles(props) {
   const {articles} = props
 
-  console.log(articles,'articles  ')
   // ✨ where are my props? Destructure them here
 
   const token = localStorage.getItem('token')

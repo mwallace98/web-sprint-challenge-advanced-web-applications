@@ -25,6 +25,7 @@ export default function App() {
   const redirectToArticles = () => { /* ✨ implement */ }
 
   const logout = () => {
+    localStorage.removeItem('token')
     // ✨ implement
     // If a token is in local storage it should be removed,
     // and a message saying "Goodbye!" should be set in its proper state.
@@ -42,7 +43,7 @@ export default function App() {
     .then(res => {
       localStorage.setItem('token', res.data.token)
       setSpinnerOn(false)
-      setMessage(`Here are your articles, ${username}!`)
+      setMessage(`Here are your articles, ${username}!`);
       navigate('/articles')
       getArticles()
       console.log(res,'login')
@@ -60,7 +61,6 @@ export default function App() {
   }
 
   const getArticles = () => {
-    setMessage('')
     axiosWithAuth().get('http://localhost:9000/api/articles')
   .then(res =>{
     setArticles(res.data.articles)
